@@ -1,0 +1,66 @@
+<h2 *ngIf="">TOMA ESTO OSCAR</h2>
+<div class="container">
+    <h1 *ngIf="prestamo.id == null">Crear préstamo</h1>
+    <h1 *ngIf="prestamo.id != null">Modificar préstamo</h1>
+
+    
+    <form>
+        <mat-form-field>
+            <mat-label>Identificador</mat-label>
+            <input type="number" matInput placeholder="Identificador" [(ngModel)]="prestamo.id" name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Titulo del juego</mat-label>
+            <mat-select disableRipple [(ngModel)]="prestamo.game" name="game" required>
+                <mat-option  *ngFor="let game of games" [value]="game">{{game.title}}</mat-option>
+            </mat-select>
+            <mat-error> Titulo de juego no válido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Nombre del cliente</mat-label>
+            <mat-select disableRipple [(ngModel)]="prestamo.client" name="client" required>
+                <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+            </mat-select>
+            <mat-error> Cliente no válido </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha del prestamo</mat-label>
+            <input type="text" matInput placeholder="Fecha prestamo" [(ngModel)]="prestamo.dayIn" name="dayIn" required>
+            <mat-error>La fecha del prestamo no puede estar vacía</mat-error> 
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de devolución</mat-label>
+            <input type="text" matInput placeholder="Fecha devolución" [(ngModel)]="prestamo.dayOut" name="dayOut" required>
+            <mat-error>La fecha de devolución no puede estar vacía</mat-error>
+        </mat-form-field>
+    </form>
+
+    <div class="error" *ngIf="checkDayOut(prestamo) == false ">
+        <h4>La fecha de devolución es menor a la fecha del préstamo</h4>
+    </div>
+
+    <div class="error" *ngIf="checkMaxDays(prestamo) == false">
+        <h4>La fecha de devolución del préstamo no puede ser mayor a 14 días</h4>
+    </div>
+
+
+    <div class="error" *ngIf="resultsClient == true">
+        <h4>El cliente ya tiene más de 1 préstamo</h4>
+    </div> 
+
+    <div class="error" *ngIf="resultsGame == true">
+        <h4>El juego ya está prestado</h4>
+    </div> 
+
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        
+    </div>
+
+    
+</div>
